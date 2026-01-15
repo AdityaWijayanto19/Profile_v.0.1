@@ -1,7 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 
-// Komponen Reusable untuk Section Content
+// Komponen Reusable untuk Section Content (SECTION 3 dst)
 const FadeInSection = ({ children }) => (
   <motion.section
     initial={{ opacity: 0, y: 50 }}
@@ -34,7 +34,9 @@ export default function App() {
       transition={{ duration: 0.8 }}
       className="relative w-full overflow-x-hidden"
     >
-      {/* --- HERO SECTION --- */}
+      {/* =====================================================
+          SECTION 1 : HERO
+      ====================================================== */}
       <section className="relative h-screen w-full flex items-end justify-start overflow-hidden bg-white p-10 md:p-20">
         {/* Background Video */}
         <motion.video
@@ -53,6 +55,7 @@ export default function App() {
           <source src="/videos/ink.mp4" type="video/mp4" />
         </motion.video>
 
+        {/* Black overlay after 15s */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: ended15 ? 1 : 0 }}
@@ -60,17 +63,17 @@ export default function App() {
           className="absolute inset-0 bg-black z-10 pointer-events-none"
         />
 
-        {/* Branding & Sub-text (Kiri Atas) */}
+        {/* Branding */}
         <div className="absolute top-10 left-10 z-20 mix-blend-difference">
           <p className="text-white text-xs tracking-[0.3em] font-medium uppercase">
             Est. 2026 / Visual Studio
           </p>
         </div>
 
-        {/* Main Typography (Kiri Bawah) */}
+        {/* Main Typography */}
         <motion.div
           style={{ y: textY }}
-          className="relative z-20 text-reveal flex flex-col items-start"
+          className="relative z-20 flex flex-col items-start"
         >
           <motion.h1
             initial={{ x: -100, opacity: 0 }}
@@ -96,7 +99,7 @@ export default function App() {
           </motion.div>
         </motion.div>
 
-        {/* Scroll Indicator (Kanan Bawah) */}
+        {/* Scroll Indicator */}
         <div className="absolute bottom-10 right-10 z-20 mix-blend-difference hidden md:block">
           <div className="flex items-center gap-4 rotate-90 origin-right">
             <span className="text-white text-[10px] tracking-widest uppercase">
@@ -107,16 +110,44 @@ export default function App() {
         </div>
       </section>
 
-      {/* --- CONTENT SECTION --- */}
+      {/* =====================================================
+          SECTION 2 : MANIFESTO (BARU)
+      ====================================================== */}
+      <motion.section className="relative min-h-screen w-full flex items-center justify-center bg-black px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
+          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          viewport={{ once: true, amount: 0.6 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl text-center"
+        >
+          <p className="text-zinc-500 text-xs tracking-[0.4em] uppercase mb-10">
+            Manifesto
+          </p>
+
+          <h2 className="text-white text-3xl md:text-5xl lg:text-6xl font-medium leading-tight tracking-tight">
+            Motion is not an effect.
+            <br />
+            <span className="text-zinc-400">
+              It is the language of intention.
+            </span>
+          </h2>
+        </motion.div>
+      </motion.section>
+
+      {/* =====================================================
+          SECTION 3 : PHILOSOPHY (PUNYA KAMU)
+      ====================================================== */}
       <FadeInSection>
         <h2 className="text-zinc-500 text-xs tracking-[0.5em] uppercase mb-12">
           The Philosophy
         </h2>
+
         <p className="max-w-3xl text-white text-3xl md:text-5xl font-medium text-center leading-tight tracking-tight">
-          We believe in the power of{" "}
-          <span className="text-white italic">motion</span> to tell stories that
-          static pixels simply cannot.
+          We believe in the power of <span className="italic">motion</span> to
+          tell stories that static pixels simply cannot.
         </p>
+
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-10 w-full max-w-6xl">
           {[1, 2, 3].map((i) => (
             <div key={i} className="border-t border-zinc-800 pt-6">
@@ -131,6 +162,62 @@ export default function App() {
           ))}
         </div>
       </FadeInSection>
+      {/* --- SECTION 3 : VALUES --- */}
+      <motion.section className="relative w-full bg-black px-6 py-32">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.8 }}
+            className="mb-20"
+          >
+            <p className="text-zinc-500 text-xs tracking-[0.4em] uppercase mb-6">
+              What I Believe
+            </p>
+            <h3 className="text-white text-4xl md:text-5xl font-medium tracking-tight">
+              Built on clarity,
+              <br />
+              driven by purpose.
+            </h3>
+          </motion.div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+            {[
+              {
+                title: "Design with Meaning",
+                desc: "Every motion, color, and layout exists for a reason — not decoration.",
+              },
+              {
+                title: "Performance First",
+                desc: "Smooth animation should never sacrifice speed or accessibility.",
+              },
+              {
+                title: "Scalable Thinking",
+                desc: "What starts simple must grow clean, structured, and maintainable.",
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+                transition={{ duration: 0.8, delay: i * 0.15 }}
+                className="border-t border-zinc-800 pt-8"
+              >
+                <h4 className="text-white text-xl font-medium mb-4">
+                  {item.title}
+                </h4>
+                <p className="text-zinc-400 text-sm leading-relaxed">
+                  {item.desc}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
     </motion.main>
   );
 }
