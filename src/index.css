@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+body {
+  background: white;
+  cursor: crosshair; 
+}
+
+@theme {
+  --font-sans: "Inter", "Geist", sans-serif;
+  --font-display: "Clash Display", "Inter", sans-serif;
+}
+
+:root {
+  background-color: white;
+  color: black;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Biar teks putih bener-bener tajam pas di atas asap */
+.text-reveal {
+  mix-blend-mode: difference;
+  will-change: transform, opacity;
+}
+
+/* Biar scrollnya nggak kaku */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 6px; /* Sangat tipis */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333; /* Warna gelap minimalis */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 2. Lock horizontal overflow agar tidak goyang kanan-kiri */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
