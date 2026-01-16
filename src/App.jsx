@@ -1,265 +1,213 @@
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { useRef } from "react";
 
-// Hook untuk scroll yang smooth banget
-const useSmoothTransform = (value, input, output) => {
-  return useSpring(useTransform(value, input, output), {
-    stiffness: 60,
-    damping: 30,
-    restDelta: 0.001,
-  });
-};
+const SECTIONS_DATA = [
+  { title: "SYSTEM ARCHITECTURE", color: "#10b981", bg: "#050807", label: "01. CORE" },
+  { title: "DATABASE SCHEMA", color: "#f43f5e", bg: "#080505", label: "02. PERSIST" },
+  { title: "SECURITY LAYER", color: "#a855f7", bg: "#060508", label: "03. ENCRYPT" },
+  { title: "API GATEWAY", color: "#3b82f6", bg: "#050608", label: "04. ROUTE" },
+  { title: "INFRASTRUCTURE", color: "#f59e0b", bg: "#080705", label: "05. DEPLOY" }
+];
 
-export default function MonotoneBackend() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const videoScale = useSmoothTransform(scrollYProgress, [0, 0.2], [1, 1.2]);
-  const videoOpacity = useSmoothTransform(
-    scrollYProgress,
-    [0, 0.2],
-    [0.8, 0.2]
-  );
+// --- THE REAL APEX PREDATOR (HAND-CRAFTED SVG PATH) ---
+const BeastEngine = ({ progress, color }) => {
+  const stepFreq = 45; 
+  
+  // Pergerakan kaki diagonal yang berat
+  const legA = useTransform(progress, p => Math.sin(p * stepFreq) * 12);
+  const legB = useTransform(progress, p => Math.sin(p * stepFreq + Math.PI) * 12);
+  
+  // Goyangan pundak saat berjalan
+  const sway = useTransform(progress, p => Math.sin(p * stepFreq) * 2);
 
   return (
-    <div
-      ref={containerRef}
-      className="bg-black text-white selection:bg-white selection:text-black"
+    <div className="relative w-32 h-48 flex items-center justify-center translate-y-4">
+      <svg viewBox="0 0 120 180" className="w-full h-full drop-shadow-[0_25px_35px_rgba(0,0,0,0.85)]">
+        <defs>
+          <linearGradient id="bodyShine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(0,0,0,0.3)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.08)" />
+            <stop offset="100%" stopColor="rgba(0,0,0,0.3)" />
+          </linearGradient>
+        </defs>
+
+        {/* 1. KAKI BELAKANG (Paha Besar & Berotot) */}
+        <motion.path 
+            style={{ y: legB }}
+            d="M25 25 Q15 25 15 45 Q15 65 25 65 L40 60 L38 25 Z" fill={color} opacity="0.6" 
+        />
+        <motion.path 
+            style={{ y: legA }}
+            d="M95 25 Q105 25 105 45 Q105 65 95 65 L80 60 L82 25 Z" fill={color} opacity="0.6" 
+        />
+
+        {/* 2. BADAN UTAMA (Grizzly Silhouette: Pear-Shaped Muscle) */}
+        {/* Lebar di panggul, mengecil di pinggang, lebar luar biasa di pundak depan */}
+        <motion.path 
+          style={{ rotate: sway }}
+          d="M60 15 C35 15 22 45 28 85 C32 130 15 155 60 165 C105 155 88 130 92 85 C98 45 85 15 60 15 Z" 
+          fill={color} 
+        />
+        
+        {/* 3. DETAIL PUNDAK (The Heavy Hump Detail) */}
+        <motion.path 
+          style={{ rotate: sway }}
+          d="M38 120 Q60 138 82 120" 
+          fill="none" stroke="black" strokeWidth="8" opacity="0.15" strokeLinecap="round"
+        />
+
+        {/* 4. KAKI DEPAN (Pundak Lebar dengan Cakar Predator) */}
+        {/* Kiri Depan */}
+        <motion.g style={{ y: legA, x: sway }}>
+          <path d="M15 105 Q2 105 2 135 L18 150 L32 130 L28 105 Z" fill={color} />
+          {/* Cakar Melengkung Tajam (Hooked Claws) */}
+          <path d="M4 145 Q2 165 0 170 M8 148 Q7 168 7 173 M13 150 Q13 170 13 175 M18 148 Q20 168 20 173 M23 145 Q25 165 26 170" 
+                stroke="black" strokeWidth="1.2" fill="none" opacity="0.5" strokeLinecap="round" />
+        </motion.g>
+
+        {/* Kanan Depan */}
+        <motion.g style={{ y: legB, x: sway }}>
+          <path d="M105 105 Q118 105 118 135 L102 150 L88 130 L92 105 Z" fill={color} />
+          {/* Cakar Melengkung Tajam (Hooked Claws) */}
+          <path d="M116 145 Q118 165 120 170 M112 148 Q113 168 113 173 M107 150 Q107 170 107 175 M102 148 Q100 168 100 173 M97 145 Q95 165 94 170" 
+                stroke="black" strokeWidth="1.2" fill="none" opacity="0.5" strokeLinecap="round" />
+        </motion.g>
+
+        {/* 5. KEPALA PREDATOR (Facing Downwards - Small & Aggressive) */}
+        <g transform="translate(60, 148)">
+          {/* Kepala & Moncong */}
+          <path d="M-16 -15 Q0 8 16 -15 L14 15 Q0 30 -14 15 Z" fill={color} />
+          {/* Kuping Grizzly (Menonjol di samping) */}
+          <circle cx="-14" cy="-12" r="5.5" fill={color} />
+          <circle cx="14" cy="-12" r="5.5" fill={color} />
+          {/* Detail Moncong (Hidung) */}
+          <path d="M-6 16 Q0 28 6 16 L0 32 Z" fill="black" opacity="0.4" />
+          <circle cx="0" cy="30" r="2.5" fill="black" />
+        </g>
+        
+        {/* 6. BODY LIGHTING (Biar gak flat) */}
+        <motion.path 
+          style={{ rotate: sway }}
+          d="M60 15 C35 15 22 45 28 85 C32 130 15 155 60 165 C105 155 88 130 92 85 C98 45 85 15 60 15 Z" 
+          fill="url(#bodyShine)" 
+        />
+      </svg>
+    </div>
+  );
+};
+
+const BearPawTrail = ({ color, style, side }) => (
+  <motion.svg 
+    style={style}
+    viewBox="0 0 24 24" 
+    fill={color} 
+    className={`w-6 h-6 rotate-180 ${side === 'left' ? '-rotate-[195deg]' : 'rotate-[195deg]'}`}
+  >
+    <path d="M12,2C10.9,2,10,2.9,10,4s0.9,2,2,2s2-0.9,2-2S13.1,2,12,2z M7,4C5.9,4,5,4.9,5,6s0.9,2,2,2s2-0.9,2-2S8.1,4,7,4z M17,4 c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S18.1,4,17,4z M12,8c-3.3,0-6,2.7-6,6c0,2.2,1.8,4,4,4c0.7,0,1.4-0.2,2-0.5 c0.6,0.3,1.3,0.5,2,0.5c2.2,0,4-1.8,4-4C18,10.7,15.3,8,12,8z" />
+  </motion.svg>
+);
+
+const FlowSection = ({ data, index }) => {
+  const sectionRef = useRef(null);
+  const isLeftContent = index % 2 === 0;
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start 100%", "end 20%"],
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 120, damping: 25 });
+
+  // LOGIKA EMAS ANDA: 0.6 -> 0.97 + CLAMP
+  const flowProgress = useTransform(smoothProgress, [0, 1], [0.05, 0.97], { clamp: true });
+
+  const paws = Array.from({ length: 14 });
+
+  return (
+    <section 
+      ref={sectionRef} 
+      style={{ backgroundColor: data.bg }}
+      className="relative min-h-screen w-full flex items-center px-10 md:px-32 py-40 overflow-hidden"
     >
-      {/* =====================================================
-          SECTION 1: THE CORE (HERO)
-      ====================================================== */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden bg-white">
-        {/* Grayscale Video Background */}
+      <div 
+        className={`absolute top-0 bottom-0 w-24 z-10 flex flex-col justify-between py-24
+          ${isLeftContent ? 'left-4 md:left-24' : 'right-4 md:right-24'}
+        `}
+      >
         <motion.div
-          style={{ scale: videoScale, opacity: videoOpacity }}
-          className="absolute inset-0 z-0"
-        >
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover grayscale brightness-125"
-          >
-            <source src="/videos/ink.mp4" type="video/mp4" />
-          </video>
-        </motion.div>
-
-        {/* Mix-Blend Typography - Ini yang lo suka */}
-        <div className="relative z-10 w-full h-full flex items-center justify-center mix-blend-difference">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-            className="text-center text-white"
-          >
-            <h1 className="text-[18vw] font-black leading-[0.75] tracking-tighter uppercase italic">
-              SYSTEM
-              <br />
-              LOGIC.
-            </h1>
-            <p className="mt-8 font-mono text-sm tracking-[0.5em] uppercase opacity-80">
-              Architecting Invisible Infrastructures
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* =====================================================
-          SECTION 2: MANIFESTO
-      ====================================================== */}
-      <section className="relative min-h-screen bg-black flex items-center px-10 md:px-32">
-        <div className="max-w-5xl">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            className="font-mono text-zinc-500 text-xs mb-10 tracking-[0.3em]"
-          >
-            // 01. PHILOSOPHY
-          </motion.p>
-          <h2 className="text-4xl md:text-7xl font-light leading-tight tracking-tight">
-            I believe in{" "}
-            <span className="text-white font-bold">stability by design</span>.
-            While others focus on what's seen, I master the{" "}
-            <span className="italic text-zinc-500">unseen forces</span> that
-            keep systems alive.
-          </h2>
-        </div>
-      </section>
-
-      {/* =====================================================
-          SECTION 3: THE ENGINE (STACK) - COLOR ON HOVER
-      ====================================================== */}
-      <section className="relative py-40 bg-zinc-950">
-        <div className="px-10 md:px-32 mb-24">
-          <h3 className="text-6xl md:text-9xl font-black text-zinc-900 leading-none select-none">
-            CAPABILITIES
-          </h3>
-        </div>
-
-        <div className="border-t border-zinc-800">
-          {[
-            {
-              title: "Backend Architecture",
-              tech: "Golang / Node.js / Rust",
-              color: "hover:text-emerald-400",
-            },
-            {
-              title: "Cloud Infrastructure",
-              tech: "AWS / Kubernetes / Terraform",
-              color: "hover:text-blue-400",
-            },
-            {
-              title: "Data Management",
-              tech: "PostgreSQL / Redis / Kafka",
-              color: "hover:text-purple-400",
-            },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className={`group border-b border-zinc-800 py-16 px-10 md:px-32 flex flex-col md:flex-row justify-between items-center transition-all duration-500 ${item.color}`}
-            >
-              <span className="font-mono text-zinc-700 group-hover:text-white transition-colors">
-                0{i + 1}
-              </span>
-              <h4 className="text-3xl md:text-6xl font-bold uppercase tracking-tighter">
-                {item.title}
-              </h4>
-              <p className="font-mono text-zinc-500 group-hover:text-white transition-colors">
-                {item.tech}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* =====================================================
-          SECTION 4: DATA FLOW (PROCESS)
-      ====================================================== */}
-      <section className="relative min-h-screen bg-black flex flex-col justify-center py-20 px-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-zinc-800">
-          {[
-            {
-              step: "Analysis",
-              desc: "Translating business complexity into technical requirements.",
-            },
-            {
-              step: "Development",
-              desc: "Writing clean, modular, and highly documented codebases.",
-            },
-            {
-              step: "Optimization",
-              desc: "Stress testing and refining for maximum throughput.",
-            },
-            {
-              step: "Deployment",
-              desc: "Global scaling with zero-downtime CI/CD pipelines.",
-            },
-          ].map((proc, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ backgroundColor: "#0a0a0a" }}
-              className="bg-black p-16 flex flex-col justify-between aspect-square md:aspect-video"
-            >
-              <h5 className="text-5xl font-black text-zinc-800 italic uppercase">
-                /{proc.step}
-              </h5>
-              <p className="text-zinc-500 text-lg max-w-xs">{proc.desc}</p>
-            </motion.div>
-          ))}
-        </div>
-      </section>
-
-      {/* =====================================================
-          SECTION 5: SYSTEM METRICS (ACHIEVEMENTS)
-      ====================================================== */}
-      <section className="relative h-screen flex items-center bg-white text-black px-10 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none select-none italic font-black text-[30vw] leading-none">
-          PERFORMANCE
-        </div>
-        <div className="relative z-10 w-full grid grid-cols-1 md:grid-cols-3 gap-20">
-          {[
-            { label: "Uptime", val: "99.9%" },
-            { label: "Request/Sec", val: "25k+" },
-            { label: "Security", val: "A+" },
-          ].map((m, i) => (
-            <div key={i} className="border-l-4 border-black pl-8">
-              <p className="font-mono text-xs uppercase tracking-[0.5em] mb-4">
-                {m.label}
-              </p>
-              <h6 className="text-7xl md:text-9xl font-black tracking-tighter">
-                {m.val}
-              </h6>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* =====================================================
-          SECTION 6: THE PIPELINE (SCROLL REVEAL)
-      ====================================================== */}
-      <section className="relative py-40 bg-black text-center">
-        <motion.div
-          style={{
-            opacity: useTransform(
-              scrollYProgress,
-              [0.75, 0.85, 0.95],
-              [0, 1, 0.5]
-            ),
+          style={{ 
+            top: useTransform(flowProgress, [0, 1], ["0%", "100%"]),
+            y: "-50%" 
           }}
-          className="px-6"
+          className="absolute left-0 right-0 flex justify-center z-30 pointer-events-none"
         >
-          <h2 className="text-6xl md:text-[12vw] font-black uppercase leading-none mb-10">
-            Scalable <br /> Thinking.
-          </h2>
-          <div className="w-1 h-40 bg-gradient-to-b from-white to-transparent mx-auto" />
+          <BeastEngine progress={smoothProgress} color={data.color} />
         </motion.div>
-      </section>
 
-      {/* =====================================================
-          SECTION 7: HANDSHAKE (CONTACT)
-      ====================================================== */}
-      <section className="relative h-screen bg-black flex flex-col items-center justify-center px-10 border-t border-zinc-900">
-        {/* Hover-only color on the final CTA */}
+        {paws.map((_, i) => {
+          const isLeftPaw = i % 2 === 0;
+          const threshold = i / (paws.length - 1);
+          return (
+            <div key={i} className={`flex w-full ${isLeftPaw ? 'justify-start px-1' : 'justify-end px-1'}`}>
+              <BearPawTrail 
+                side={isLeftPaw ? 'left' : 'right'}
+                color={data.color}
+                style={{ 
+                  opacity: useTransform(flowProgress, [threshold, threshold + 0.02], [0, 0.35]),
+                  scale: useTransform(flowProgress, [threshold, threshold + 0.02], [0.5, 1]),
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      <div className={`w-full flex flex-col ${!isLeftContent ? 'items-end text-right' : 'items-start text-left'}`}>
         <motion.div
-          whileHover={{ scale: 1.02 }}
-          className="group relative text-center cursor-pointer"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1 }}
+          className="relative z-40 max-w-2xl"
         >
-          <span className="font-mono text-xs text-zinc-600 mb-6 block tracking-[1em] uppercase group-hover:text-emerald-500 transition-colors">
-            Initialize Connection
+          <span className="font-mono text-xs tracking-[0.8em] mb-4 block uppercase font-bold" style={{ color: data.color }}>
+            &gt; CORE_LOG: {data.label}
           </span>
-          <h2 className="text-5xl md:text-[8vw] font-bold tracking-tighter uppercase mb-12 mix-blend-difference">
-            Work Together_
+          <h2 className="text-7xl md:text-[10vw] font-black tracking-tighter mb-8 text-white uppercase italic leading-[0.8]">
+            {data.title.split(' ')[0]}<br/>
+            <span style={{ WebkitTextStroke: `1px ${data.color}`, color: "transparent", opacity: 0.3 }}>
+              {data.title.split(' ')[1]}
+            </span>
           </h2>
-          <a
-            href="mailto:core@system.dev"
-            className="inline-block border border-white px-16 py-6 text-sm font-mono tracking-widest uppercase hover:bg-white hover:text-black transition-all"
-          >
-            [ EXECUTE ]
-          </a>
+          <p className="text-zinc-500 text-lg md:text-xl font-light leading-relaxed max-w-md italic border-l-2 border-zinc-900 pl-6">
+            "Sistem backend yang tangguh, meninggalkan jejak performa yang presisi."
+          </p>
         </motion.div>
+      </div>
+    </section>
+  );
+};
 
-        {/* Technical Footer */}
-        <div className="absolute bottom-10 w-full px-10 flex flex-col md:flex-row justify-between items-center text-[10px] font-mono text-zinc-700 gap-4 uppercase tracking-[0.3em]">
-          <div className="flex gap-10">
-            <span>Status: 200 OK</span>
-            <span>Port: 443</span>
-          </div>
-          <p>© 2026 / Architecture Studio / Profile.Que</p>
-          <div className="flex gap-10">
-            <span className="hover:text-white cursor-pointer transition-colors">
-              Github
-            </span>
-            <span className="hover:text-white cursor-pointer transition-colors">
-              LinkedIn
-            </span>
-          </div>
+export default function ApexPredatorFinal() {
+  return (
+    <div className="bg-black text-white selection:bg-white selection:text-black">
+      <section className="h-screen flex items-center justify-center bg-[#020202]">
+        <div className="text-center relative">
+          <h1 className="text-7xl md:text-[14vw] font-black italic tracking-tighter uppercase leading-[0.7] opacity-20">
+            APEX<br/>CORE
+          </h1>
+          <p className="font-mono text-[10px] tracking-[1.5em] text-zinc-800 mt-10 uppercase font-bold">Initializing Predator Engine</p>
         </div>
       </section>
+
+      <div className="relative">
+        {SECTIONS_DATA.map((section, index) => (
+          <FlowSection key={index} data={section} index={index} />
+        ))}
+      </div>
+
+      <footer className="h-screen flex flex-col items-center justify-center bg-[#020202] border-t border-zinc-900">
+        <h3 className="text-zinc-800 text-xs font-mono tracking-[1.5em] uppercase italic">Territory Established</h3>
+      </footer>
     </div>
   );
 }
